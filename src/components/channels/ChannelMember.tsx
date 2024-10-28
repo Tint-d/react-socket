@@ -6,7 +6,6 @@ import { twMerge } from "tailwind-merge";
 import profile from "@/assets/pro.webp";
 import { ImSpinner2 } from "react-icons/im";
 import { useState } from "react";
-import { useDebounce } from "@/hooks/useDebounce";
 
 const ChannelMember = ({
   selectedChannelId,
@@ -18,11 +17,8 @@ const ChannelMember = ({
   const [page] = useState(1);
   const limit = 10;
 
-  const { data: channels, isLoading: isPaginatedLoading } = useGetChannelQuery(
-    page,
-    limit
-  );
-  // Filter out only pending invites for each channel
+  const { data: channels } = useGetChannelQuery(page, limit);
+
   const filteredChannels = channels?.channels?.map((channel) => ({
     ...channel,
     invitedUsers: channel.invitedUsers.filter(
