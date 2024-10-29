@@ -61,7 +61,7 @@ const useMessageSender = () => {
         message: newMessage,
         senderId,
       });
-
+      queryClient.invalidateQueries({ queryKey: ["messages"] });
       setNewMessage("");
     }
   };
@@ -84,6 +84,7 @@ const useMessageSender = () => {
         onSuccess: () => {
           setIsShow(false);
           toast.success("Message deleted successfully");
+          queryClient.invalidateQueries({ queryKey: ["messages"] });
         },
         onError: (error) => {
           toast.error(

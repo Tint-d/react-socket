@@ -43,7 +43,6 @@ const Navbar = () => {
   };
   return (
     <div className="flex sticky justify-end w-full h-12 items-center pl-5">
-      <p>create channel</p>
       <div className="flex items-center gap-2">
         <p className="capitalize text-gray-200">{user?.username}</p>
         <img

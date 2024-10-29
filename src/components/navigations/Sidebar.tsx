@@ -1,18 +1,12 @@
 import Logo from "../../assets/SPK_White 1.png";
 import "./sidebar.css";
 import { twMerge } from "tailwind-merge";
-import React, { useState } from "react";
+import React from "react";
 import { IoIosLogOut } from "react-icons/io";
-import {
-  useGetChannelQuery,
-  useSearchChannels,
-} from "@/services/channel/channel.query";
 import MyButton from "../custom/buttons/MyButton";
 import { ImSpinner2 } from "react-icons/im";
 import MyInput from "../custom/inputs/MyInput";
-import { useDebounce } from "@/hooks/useDebounce";
 import { MdDelete } from "react-icons/md";
-import { useChannelDeleteMutation } from "@/services/channel/channel.mutation";
 import DeleteModal from "../modal/DeleteModal";
 import { CiCirclePlus } from "react-icons/ci";
 
@@ -23,6 +17,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import CreateChannelModal from "../modal/CreateChannelModal";
+import useSidebar from "./hooks/useSidebar";
 
 interface SidebarProps {
   selectedChannelId: string;
@@ -32,42 +27,19 @@ const Sidebar: React.FC<SidebarProps> = ({
   handleClickchannel,
   selectedChannelId,
 }) => {
-  const [page] = useState(1);
-  const [search, setSearch] = useState("");
-  const limit = 10;
-  const debouncedSearch = useDebounce(search, 500);
-  const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const [createModal, setCreateModal] = useState(false);
-  const deleteChannelMutation = useChannelDeleteMutation();
-  const { data: channels, isLoading: isPaginatedLoading } = useGetChannelQuery(
-    page,
-    limit
-  );
-  const { data: searchResults, isLoading: isSearchLoading } = useSearchChannels(
-    debouncedSearch,
-    limit,
-    page
-  );
-
-  const handleDeleteChannel = (channelId: string) => {
-    deleteChannelMutation.mutate(channelId, {
-      onSuccess: () => {
-        console.log("Channel deleted successfully.");
-      },
-      onError: (error) => {
-        console.error("Failed to delete the channel:", error.message);
-      },
-    });
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.reload();
-  };
-
-  const displayedChannels = debouncedSearch
-    ? searchResults?.channels
-    : channels?.channels;
+  const {
+    displayedChannels,
+    handleLogout,
+    handleDeleteChannel,
+    isSearchLoading,
+    isPaginatedLoading,
+    setOpenDeleteModal,
+    openDeleteModal,
+    setCreateModal,
+    createModal,
+    setSearch,
+    deleteChannelMutation,
+  } = useSidebar();
 
   return (
     <section className="flex gap-6">
