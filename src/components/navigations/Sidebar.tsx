@@ -1,5 +1,4 @@
 import Logo from "../../assets/SPK_White 1.png";
-import "./sidebar.css";
 import { twMerge } from "tailwind-merge";
 import React from "react";
 import { IoIosLogOut } from "react-icons/io";

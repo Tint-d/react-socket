@@ -1,4 +1,3 @@
-import "./sidebar.css";
 import { useState } from "react";
 import {
   useGetChannelQuery,
